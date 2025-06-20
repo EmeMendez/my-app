@@ -16,10 +16,7 @@ jobs:
         cd /home/deploy/my-app
 
         echo "📦 Ejecutando build con Angular CLI..."
-        if ! npx ng build; then
-          echo "❌ Error: Falló el build de Angular"
-          exit 1
-        fi
+        npx ng build
 
         echo "✅ Build generado exitosamente"
 
