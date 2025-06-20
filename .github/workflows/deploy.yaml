@@ -15,6 +15,12 @@ jobs:
         echo "📁 Entrando al proyecto Angular..."
         cd /home/deploy/my-app
 
+        echo "🌐 Obteniendo nuevos cambios..."
+        git fetch
+
+        echo "⬇️ Haciendo pull"
+        git pull
+
         echo "📦 Ejecutando build con Angular CLI..."
         npx ng build
 
