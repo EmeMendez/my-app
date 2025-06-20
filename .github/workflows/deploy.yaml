@@ -10,24 +10,29 @@ jobs:
     runs-on: self-hosted
 
     steps:
-    - name: 🔧 Build Angular en /home/deploy/my-app
+    - name: 🔧 Pull + Build Angular en /home/deploy/my-app
       run: |
         echo "📁 Entrando al proyecto Angular..."
         cd /home/deploy/my-app
 
-        echo "🌐 Obteniendo nuevos cambios..."
+        echo "🌐 Obteniendo últimos cambios..."
         git fetch
+        git reset --hard origin/main  # Asegura que esté limpio
+        git pull origin main || { echo "❌ git pull falló"; exit 1; }
 
-        echo "⬇️ Haciendo pull"
-        git pull
-
-        echo "📦 Ejecutando build con Angular CLI..."
-        npx ng build
+        echo "🏗️ Ejecutando build con Angular CLI..."
+        if ! npx ng build; then
+          echo "❌ Error: Falló el build"
+          exit 1
+        fi
 
         echo "✅ Build generado exitosamente"
 
     - name: 📤 Copiar archivos de build a /var/www/my-app
       run: |
+        echo "🧹 Limpiando carpeta destino..."
+        rm -rf /var/www/my-app/*
+
         echo "📂 Copiando archivos desde dist/my-app..."
         cp -r /home/deploy/my-app/dist/my-app/* /var/www/my-app/
 
