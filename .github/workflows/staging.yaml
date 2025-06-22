@@ -3,10 +3,10 @@ name: Despliegue automático
 on:
   push:
     branches:
-      - main
-
+      - staging
 jobs:
   deploy:
+    environment: staging
     runs-on: self-hosted
 
     steps:
@@ -20,6 +20,14 @@ jobs:
         echo "📦 Ejecutando build con Angular CLI..."
         npx ng build
         echo "✅ Build generado exitosamente"
+    - name: 👾 Pruebas unitarias
+      run: |
+        echo "🧐 Ejecutando pruebas unitarias..."
+        if ! npx ng test --watch=false --browsers=ChromeHeadless; then
+          echo "❌ Las pruebas fallaron. Revisa los logs arriba."
+          exit 1
+        fi
+        echo "✅ Pruebas unitarias completadas"
     - name: 📤 Copiar archivos de build a /var/www/my-app
       run: |
         echo "📂 Copiando archivos desde dist/my-app..."
