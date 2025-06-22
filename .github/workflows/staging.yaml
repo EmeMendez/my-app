@@ -23,7 +23,7 @@ jobs:
     - name: 👾 Pruebas unitarias
       run: |
         echo "🧐 Ejecutando pruebas unitarias..."
-        if ! npx ng test --watch=false --browsers=ChromeHeadless; then
+        if ! export CHROME_BIN=$(which chromium-browser) npx ng test --watch=false --browsers=ChromeHeadless; then
           echo "❌ Las pruebas fallaron. Revisa los logs arriba."
           exit 1
         fi
