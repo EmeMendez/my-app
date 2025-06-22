@@ -1,0 +1,35 @@
+name: Despliegue automático (dev)
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Instalar Chromium para pruebas
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y chromium
+          chromium --version
+
+      - name: Instalar dependencias y build Angular
+        run: |
+          npm install
+          npx ng build
+
+      - name: Ejecutar pruebas unitarias con ChromeHeadless
+        run: |
+          export CHROME_BIN=$(which chromium)
+          npx ng test --watch=false --browsers=ChromeHeadless
