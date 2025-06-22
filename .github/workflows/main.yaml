@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     environment: production
-    runs-on: self-hosted
+    runs-on: production
 
     steps:
     - name: 🔧 Build Angular en /home/deploy/my-app

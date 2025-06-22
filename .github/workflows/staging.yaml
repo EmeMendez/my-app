@@ -7,7 +7,7 @@ on:
 jobs:
   deploy:
     environment: staging
-    runs-on: self-hosted
+    runs-on: staging
 
     steps:
     - name: 🔧 Build Angular en /home/deploy/my-app
